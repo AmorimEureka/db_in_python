@@ -1,0 +1,19 @@
+services:
+  projeto_sqlalchemy:
+    image: postgres:17rc1-alpine3.19
+    restart: unless-stopped
+    container_name: destination_postgres
+    env_file: ./.env
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - postgres_sqlalchemy
+
+volumes:
+  postgres-volume:
+
+networks:
+  postgres_sqlalchemy:
+    driver: bridge
