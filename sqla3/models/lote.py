@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
+from sqlalchemy.orm import Mapped
 from datetime import datetime
 from models.model_base import ModelBase
 from models.tipo_picole import TipoPicole
@@ -13,7 +14,7 @@ class Lote(ModelBase):
     data_criacao: datetime = sa.Column(sa.DateTime, default=datetime.now, index=True)
 
     id_tipo_picole: int = sa.Column(sa.Integer, sa.ForeignKey('tipos_picole.id'))
-    tipo_picole: TipoPicole = orm.relationship('TipoPicole', lazy='joined')
+    tipo_picole: Mapped[TipoPicole] = orm.relationship('TipoPicole', lazy='joined')
 
     quantidade: int = sa.Column(sa.Integer, nullable=False)
 

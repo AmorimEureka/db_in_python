@@ -1,5 +1,7 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
+from sqlalchemy.orm import Mapped
+
 
 from datetime import datetime
 from typing import List, Optional
@@ -51,28 +53,28 @@ class Picole(ModelBase):
 
 
     id_sabor: int = sa.Column(sa.Integer, sa.ForeignKey('sabores.id'))
-    sabor: Sabor = orm.relationship('Sabor', lazy='joined')
+    sabor: Mapped[Sabor] = orm.relationship('Sabor', lazy='joined')
 
     id_tipo_embalagem: int = sa.Column(sa.Integer, sa.ForeignKey('tipos_embalagem.id'))
-    tipo_embalagem: TipoEmbalage = orm.relationship('TipoEmbalage', lazy='joined')
+    tipo_embalagem: Mapped[TipoEmbalage] = orm.relationship('TipoEmbalage', lazy='joined')
 
     id_tipo_picole: int = sa.Column(sa.Integer, sa.ForeignKey('tipos_picole.id'))
-    tipo_picole: TipoPicole = orm.relationship('TipoPicole', lazy='joined')
+    tipo_picole: Mapped[TipoPicole] = orm.relationship('TipoPicole', lazy='joined')
 
 
-    picoles_aditivos_nutritivos: Optional[AditivoNutritivo] = orm.relationship(
+    picoles_aditivos_nutritivos: Mapped[Optional[AditivoNutritivo]] = orm.relationship(
         'aditivos_nutritivos',
         secondary=aditivivos_nutritivos_picole,
         backref='aditivos_nutrivos',
         lazy='dynamic')
 
-    picoles_conservantes: Optional[Conservante] = orm.relationship(
+    picoles_conservantes: Mapped[Optional[Conservante]] = orm.relationship(
         'conservantes',
         secondary=conservantes_picoles,
         backref='conservantes',
         lazy='dynamic')
 
-    picoles_ingredientes: List[Ingrediente] = orm.relationship(
+    picoles_ingredientes: Mapped[List[Ingrediente]] = orm.relationship(
         'ingredientes',
         secondary=ingredientes_picole,
         backref='ingredientes',

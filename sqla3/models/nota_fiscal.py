@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
+from sqlalchemy.orm import Mapped
 from datetime import datetime
 from typing import List
 from models.model_base import ModelBase
@@ -10,6 +11,7 @@ from models.lote import Lote
 lotes_nota_fiscal = sa.Table(
     'lotes_nota_fiscal',
     ModelBase.metadata,
+    sa.Column('id', sa.BigInteger, primary_key=True, autoincrement=True),
     sa.Column('id_nota_fiscal', sa.Integer, sa.ForeignKey('notas_fiscais.id')),
     sa.Column('id_lote', sa.Integer, sa.ForeignKey('lotes.id'))
 )
@@ -29,9 +31,9 @@ class NotaFiscal(ModelBase):
     descricao: str = sa.Column(sa.String(200), nullable=False)
 
     id_revendedor: int = sa.Column(sa.Integer, sa.ForeignKey('revendedores.id'))
-    revendedor: Revendedor = orm.relationship('Revendedor', lazy='joined')
+    revendedor: Mapped[Revendedor] = orm.relationship('Revendedor', lazy='joined')
 
-    lotes: List[Lote] = orm.relationship('Lote', secondary=lotes_nota_fiscal, backref='lote', lazy='dynamic')
+    lotes: Mapped[List[Lote]] = orm.relationship('Lote', secondary=lotes_nota_fiscal, backref='lote', lazy='dynamic')
 
     def __repr__(self) -> str:
         return f"<Nota fiscal: {self.numero_serie}>"
