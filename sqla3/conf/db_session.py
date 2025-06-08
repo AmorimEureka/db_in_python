@@ -17,8 +17,8 @@ __engine: Optional[Engine] = None
 def create_engine(sqlite: bool = False) -> Engine:
 
     """
-        Engine padrão para configurar a interface do mecansmo
-         de conexão com o PostreSQL, sendo possível utilizar sqlite
+        Criar Engine padrão para configurar a interface do mecansmo
+         de conexão com o PostreSQL ou SQLite.
     """
     global __engine
 
@@ -50,13 +50,13 @@ def create_engine(sqlite: bool = False) -> Engine:
 
 def create_session() -> Session:
     """
-        Função para criar a sessao de conexao com banco de dados
+        Função para criar a sessao de conexao ao banco de dados (conexão em si).
     """
 
     global __engine
 
     if not __engine:
-        create_engine(sqlite=True) # sem postgres, então create_engine(sqlite=True)
+        create_engine() # sem postgres, então create_engine(sqlite=True)
 
     __session = sessionmaker(__engine, expire_on_commit=False, class_=Session)
 
@@ -73,7 +73,7 @@ def create_tables() -> None:
     global __engine
 
     if not __engine:
-        create_engine(sqlite=True)  # sem postgres, então create_engine(sqlite=True)
+        create_engine()  # sem postgres, então create_engine(sqlite=True)
 
     import models.__all__models
     ModelBase.metadata.drop_all(__engine)
